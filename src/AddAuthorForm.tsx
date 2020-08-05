@@ -5,15 +5,27 @@ import { Author } from "./types";
 type AuthorFormProps = {
   onAddAuthor: (author: Author) => void;
 };
+type AddState={
+  name:string;
+  imageUrl:string; 
+  Booktemp:string;
+  books:string[];
+}
+type Action=
+|{type: "setName"; name:string}
+|{type:"setImage";imageUrl:string}
+|{type:"setbook"; Booktemp:string}
+|{type:"setbookarray"};
+
 const AuthorFunction = (props: any) => {
-  const [state, setstate] = useState({
+  const state ={
     name: "",
     imageUrl: "",
     books: [],
     Booktemp: "",
-  });
+  };
 
-  const reducer = (state: any, action: any) => {
+  const reducer = (state: AddState, action: Action) => {
     debugger;
     switch (action.type) {
       case "setName":
@@ -24,7 +36,7 @@ const AuthorFunction = (props: any) => {
       case "setImage":
         return {
           ...state,
-          image: action.image,
+          imageUrl: action.imageUrl,
         };
       case "setbook":
         return {
@@ -54,7 +66,7 @@ const AuthorFunction = (props: any) => {
   // };
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    props.onAddAuthor(state);
+    props.onAddAuthor(reducerState);
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -72,8 +84,8 @@ const AuthorFunction = (props: any) => {
         <input
           type="text"
           name="image"
-          value={reducerState.image}
-          onChange={(e) => dispatch({ type: "setImage", name: e.target.value })}
+          value={reducerState.imageUrl}
+          onChange={(e) => dispatch({ type: "setImage", imageUrl: e.target.value })}
         ></input>
       </div>
 
@@ -106,37 +118,6 @@ const AuthorFunction = (props: any) => {
     </form>
   );
 };
-
-// class AuthorInput extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       name: "",
-//       image: "",
-//       books: [],
-//       booktemp: "",
-//     };
-//     this.handleSubmit = this.handleSubmit.bind(this);
-//   }
-
-//   onFieldChange(e) {
-//     this.setState({
-//       [e.target.name]: e.target.value,
-//     });
-//   }
-
-//   handleAddbook(e) {
-//     debugger;
-//     this.setState({
-//       books: this.state.books.concat([this.state.booktemp]),
-//       booktemp: "",
-//     });
-//   }
-
-//   render() {
-//     return <div></div>;
-//   }
-// }
 
 const AddAuthorForm: FC<AuthorFormProps> = ({ onAddAuthor }) => {
   return (

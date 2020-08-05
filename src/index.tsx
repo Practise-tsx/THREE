@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useContext} from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import "./App.css";
@@ -10,8 +10,9 @@ import { BrowserRouter, Route, withRouter } from "react-router-dom";
 import AddAuthorForm from "./AddAuthorForm";
 // import { UserProvider } from "./Context";
 import { Authors, Author } from "./types";
+import {AuthorQuizContext} from "./AuthorQuizContext"
 
-const authors: Author[] = [
+export const authors: Author[] = [
   {
     name: "Mark Twain",
     imageUrl: "images/authors/marktwin.jpeg",
@@ -39,8 +40,8 @@ const authors: Author[] = [
     books: ["The Shining", "IT"],
   },
 ];
-
-function getTurnData(authors: Author[]): Authors {
+ 
+export const getTurnData=(authors: Author[]): Authors =>{
   const allBooks = authors.reduce(function (p, c, i) {
     return p.concat(c.books);
   }, [] as string[]);
@@ -73,16 +74,19 @@ function resetState() {
     highlight: "",
   };
 }
-
+function onContinue(){
+  state=resetState();
+  render();
+}
 function App() {
+  var m = useContext(AuthorQuizContext);
+  console.log(m);
+
   return (
     <AuthorQuiz
       {...state}
       onAnswerSelected={onAnswerSelected}
-      onContinue={() => {
-        state = resetState();
-        render();
-      }}
+      onContinue={onContinue}
     />
   );
 }
@@ -97,16 +101,18 @@ const AuthorWrapper = withRouter(({ history }) => {
     />
   );
 });
-export const UserContext = React.createContext(state);
+// export const UserContext = React.createContext(state);
 
-const UserProvider = UserContext.Provider;
+const UserProvider = AuthorQuizContext.Provider;
 
 function render() {
   debugger;
   ReactDOM.render(
     <BrowserRouter>
       <React.Fragment>
-        <UserProvider value={state}>
+        {/* <UserProvider  value={{state:state,onContinue:onContinue}}> */}
+        <UserProvider  value={{onContinue:onContinue}}>
+
           <Route exact path="/" component={App}></Route>
           <Route exact path="/Add" component={AuthorWrapper}></Route>
         </UserProvider>

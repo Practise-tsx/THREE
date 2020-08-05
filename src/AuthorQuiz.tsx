@@ -1,4 +1,3 @@
-import { UserContext } from "./index";
 import React, { FC, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -8,6 +7,7 @@ import {
   TurnProps,
   ContinueProps,
 } from "./types";
+import { AuthorQuizContext } from "./AuthorQuizContext";
 
 const Hero: FC = () => {
   return (
@@ -65,13 +65,15 @@ const Turn: FC<TurnProps> = ({
   );
 };
 const Continue: FC<ContinueProps> = ({ show, onContinue }) => {
+  var m = useContext(AuthorQuizContext);
+  console.log(m);
   return (
     <div className="row continue">
       {show ? (
         <div className="col-11">
           <button
             className="btn btn-primary btn-lg float-right"
-            onClick={onContinue}
+            onClick={m.onContinue}
           >
             Continue
           </button>
@@ -95,10 +97,10 @@ const Footer = () => {
     </div>
   );
 };
-const AuthorQuiz: FC<AuthorQuiZprops> = ({ onAnswerSelected, onContinue }) => {
-  const authors = useContext(UserContext);
-  const turnData = authors.turnData; //from context
-  const highlight = authors.highlight; // from context
+const AuthorQuiz: FC<AuthorQuiZprops> = ({ turnData,highlight,onAnswerSelected, onContinue }) => {
+  const authors = useContext(AuthorQuizContext);
+  // const turnData = turnData; //from context
+  // const highlight = highlight; // from context
   useEffect(() => {
     console.log(authors);
   }, [authors]);

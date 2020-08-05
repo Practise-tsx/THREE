@@ -39,3 +39,7 @@ export type State = {
 export type Mapping = {
   [key: string]: string;
 };
+export type IState = {
+  // state:State;
+    onContinue: (event: React.MouseEvent) => void;
+};

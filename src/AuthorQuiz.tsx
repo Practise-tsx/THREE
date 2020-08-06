@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { AuthorQuizContext } from "./AuthorQuiz.context";
+import React, { FC, useContext } from "react";
 import {
   AuthorQuiZprops,
   BookProps,
@@ -7,7 +7,6 @@ import {
   TurnProps,
   ContinueProps,
 } from "./types";
-import { AuthorQuizContext } from "./AuthorQuizContext";
 
 const Hero: FC = () => {
   return (
@@ -47,7 +46,7 @@ const Turn: FC<TurnProps> = ({
     };
     return mapping[highlight];
   }
-
+  console.log(highlight);
   return (
     <div
       className="row turn"
@@ -64,16 +63,16 @@ const Turn: FC<TurnProps> = ({
     </div>
   );
 };
-const Continue: FC<ContinueProps> = ({ show, onContinue }) => {
-  var m = useContext(AuthorQuizContext);
-  console.log(m);
+const Continue: FC<ContinueProps> = ({ show }) => {
+  var { onContinue } = useContext(AuthorQuizContext);
+  console.log(onContinue);
   return (
     <div className="row continue">
       {show ? (
         <div className="col-11">
           <button
             className="btn btn-primary btn-lg float-right"
-            onClick={m.onContinue}
+            onClick={onContinue}
           >
             Continue
           </button>
@@ -97,13 +96,12 @@ const Footer = () => {
     </div>
   );
 };
-const AuthorQuiz: FC<AuthorQuiZprops> = ({ turnData,highlight,onAnswerSelected, onContinue }) => {
-  const authors = useContext(AuthorQuizContext);
-  // const turnData = turnData; //from context
-  // const highlight = highlight; // from context
-  useEffect(() => {
-    console.log(authors);
-  }, [authors]);
+const AuthorQuiz: FC<AuthorQuiZprops> = ({
+  turnData,
+  highlight,
+  onAnswerSelected,
+}) => {
+  // var { highlight } = useContext(AuthorQuizContext);
 
   return (
     <div className="container-fluid">
@@ -113,11 +111,7 @@ const AuthorQuiz: FC<AuthorQuiZprops> = ({ turnData,highlight,onAnswerSelected, 
         highlight={highlight}
         onAnswerSelected={onAnswerSelected}
       ></Turn>
-      <Continue
-        show={highlight === "correct"}
-        onContinue={onContinue}
-      ></Continue>
-      <Link to="/Add"> Add New Author</Link>
+      <Continue show={highlight === "correct"}></Continue>
       <Footer></Footer>
     </div>
   );

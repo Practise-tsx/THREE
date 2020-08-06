@@ -13,7 +13,7 @@ export type AuthorQuiZprops = {
   turnData: Authors;
   highlight: string;
   onAnswerSelected: (bookName: string) => void;
-  onContinue: () => void;
+  // onContinue: (event: React.MouseEvent) => void;
 };
 export type BookProps = {
   title: string;
@@ -30,7 +30,7 @@ export type TurnProps = {
 
 export type ContinueProps = {
   show: boolean;
-  onContinue: () => void;
+  // onContinue: (event: React.MouseEvent) => void;
 };
 export type State = {
   turnData: Authors;
@@ -40,6 +40,6 @@ export type Mapping = {
   [key: string]: string;
 };
 export type IState = {
-  // state:State;
-    onContinue: (event: React.MouseEvent) => void;
+  highlight: string;
+  onContinue: () => { turnData: Authors; highlight: string };
 };

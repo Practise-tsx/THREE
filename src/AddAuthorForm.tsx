@@ -1,31 +1,30 @@
-import React, { FC, useReducer, useState } from "react";
+import React, { FC, useReducer } from "react";
 import "./AddAuthorForm.css";
 import { Author } from "./types";
 
 type AuthorFormProps = {
   onAddAuthor: (author: Author) => void;
 };
-type AddState={
-  name:string;
-  imageUrl:string; 
-  Booktemp:string;
-  books:string[];
-}
-type Action=
-|{type: "setName"; name:string}
-|{type:"setImage";imageUrl:string}
-|{type:"setbook"; Booktemp:string}
-|{type:"setbookarray"};
-
+type AddState = {
+  name: string;
+  imageUrl: string;
+  Booktemp: string;
+  books: string[];
+};
+type Action =
+  | { type: "setName"; name: string }
+  | { type: "setImage"; imageUrl: string }
+  | { type: "setbook"; Booktemp: string }
+  | { type: "setbookarray" };
 const AuthorFunction = (props: any) => {
-  const state ={
-    name: "",
-    imageUrl: "",
-    books: [],
-    Booktemp: "",
-  };
-
-  const reducer = (state: AddState, action: Action) => {
+  // const [state, setstate] = useState({
+  //   name: "",
+  //   imageUrl: "",
+  //   books: [],
+  //   Booktemp: "",
+  // });
+  const state = { name: "", imageUrl: "", books: [], Booktemp: "" };
+  const reducer = (state: AddState, action: Action): AddState => {
     debugger;
     switch (action.type) {
       case "setName":
@@ -59,13 +58,9 @@ const AuthorFunction = (props: any) => {
 
   const [reducerState, dispatch] = useReducer(reducer, state);
 
-  // const handleAddbook = (e) => {
-  //   debugger;
-
-  //   setstate({ ...state, books: state.books.concat([state.Booktemp]) });
-  // };
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    console.log(reducerState);
     props.onAddAuthor(reducerState);
   };
   return (
@@ -85,7 +80,9 @@ const AuthorFunction = (props: any) => {
           type="text"
           name="image"
           value={reducerState.imageUrl}
-          onChange={(e) => dispatch({ type: "setImage", imageUrl: e.target.value })}
+          onChange={(e) =>
+            dispatch({ type: "setImage", imageUrl: e.target.value })
+          }
         ></input>
       </div>
 

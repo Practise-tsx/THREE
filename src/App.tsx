@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import "./index.css";
 import "./App.css";
 import "./bootstrap.min.css";
@@ -7,6 +7,10 @@ import { shuffle, sample } from "underscore";
 import { Authors, Author } from "./types";
 import { authors } from "./authors";
 import "./index";
+import { BrowserRouter, Route } from "react-router-dom";
+import { AuthorWrapper } from "./AuthorWrapper";
+import AddAuthorForm from "./AddAuthorForm"
+
 
 export const getTurnData = (authors: Author[]): Authors => {
   const allBooks = authors.reduce(function (p, c, i) {
@@ -29,25 +33,28 @@ let state = {
   turnData: getTurnData(authors),
   highlight: "",
 };
-function onAnswerSelected(answer: string) {
-  const isCorrect = state.turnData.author.books.some((book) => book === answer);
-  state.highlight = isCorrect ? "correct" : "wrong";
-  console.log(state.highlight);
-  console.log(answer);
-}
 
 export const App = () => {
   // var m = useContext(AuthorQuizContext);
   // console.log(m);
+  const [high, sethigh] = useState(0);
 
+  function OnAnswerSelected(answer: string) {
+    const isCorrect = state.turnData.author.books.some((book) => book === answer);
+    state.highlight = isCorrect ? "correct" : "wrong";
+    console.log(state.highlight);
+    console.log(answer);
+    sethigh(high+1);
+  }
+  
   return (
-    <>
-      <AuthorQuiz
-        {...state}
-        onAnswerSelected={onAnswerSelected}
-        // onContinue={m.onContinue}
-      />
-    </>
+    
+      
+      <BrowserRouter>
+<Route exact path='/' render={(props) => ( <AuthorQuiz {...state} onAnswerSelected={OnAnswerSelected} />  )}/>
+      <Route path="/add" component={AddAuthorForm}/>
+      </BrowserRouter>
+  
   );
 };
 

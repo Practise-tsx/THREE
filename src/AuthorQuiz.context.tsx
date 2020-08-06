@@ -14,10 +14,10 @@ export const AuthorQuizProvider: React.FC = ({ children }) => {
   //         highlight: "",
   //     }
   // const [highlight, sethighlightTheme] = useState<Highlight>("blue");
+      // sethighlightTheme(highlight === "blue" ? "dark" : "blue");
+
   const highlight = "";
   const onContinue = () => {
-    // sethighlightTheme(highlight === "blue" ? "dark" : "blue");
-
     return {
       turnData: getTurnData(authors),
       highlight: "",

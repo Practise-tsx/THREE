@@ -1,5 +1,7 @@
 import { AuthorQuizContext } from "./AuthorQuiz.context";
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useState } from "react";
+import { App } from "./App";
+import {Link} from "react-router-dom"
 import {
   AuthorQuiZprops,
   BookProps,
@@ -63,16 +65,23 @@ const Turn: FC<TurnProps> = ({
     </div>
   );
 };
+
 const Continue: FC<ContinueProps> = ({ show }) => {
   var { onContinue } = useContext(AuthorQuizContext);
   console.log(onContinue);
+
+  function onPress(){
+    var a = onContinue();
+    console.log(a);
+    window.location.reload();
+  }
   return (
     <div className="row continue">
       {show ? (
         <div className="col-11">
           <button
             className="btn btn-primary btn-lg float-right"
-            onClick={onContinue}
+            onClick={onPress}
           >
             Continue
           </button>
@@ -91,7 +100,9 @@ const Footer = () => {
             Wikimedia Commons{" "}
           </a>
           and are in the public domain
+
         </p>
+<p> <Link to = "/add"> Add Author </Link></p>
       </div>
     </div>
   );
@@ -101,7 +112,6 @@ const AuthorQuiz: FC<AuthorQuiZprops> = ({
   highlight,
   onAnswerSelected,
 }) => {
-  // var { highlight } = useContext(AuthorQuizContext);
 
   return (
     <div className="container-fluid">
@@ -111,7 +121,7 @@ const AuthorQuiz: FC<AuthorQuiZprops> = ({
         highlight={highlight}
         onAnswerSelected={onAnswerSelected}
       ></Turn>
-      <Continue show={highlight === "correct"}></Continue>
+      <Continue show={highlight === "correct"} ></Continue>
       <Footer></Footer>
     </div>
   );

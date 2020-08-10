@@ -5,6 +5,9 @@ import { Author } from "./types";
 type AuthorFormProps = {
   onAddAuthor: (author: Author) => void;
 };
+type AddFormProps = {
+  onAddAuthor: (author: Author) => void;
+};
 type AddState = {
   name: string;
   imageUrl: string;
@@ -16,7 +19,8 @@ type Action =
   | { type: "setImage"; imageUrl: string }
   | { type: "setbook"; Booktemp: string }
   | { type: "setbookarray" };
-const AuthorFunction = (props: any) => {
+
+const AuthorFunction:FC<AddFormProps> = (props:any)=> {
   // const [state, setstate] = useState({
   //   name: "",
   //   imageUrl: "",
@@ -61,7 +65,10 @@ const AuthorFunction = (props: any) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     console.log(reducerState);
+    debugger;
+    console.log(props.onAddAuthor);
     props.onAddAuthor(reducerState);
+    // props.history.push("/");
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -116,11 +123,13 @@ const AuthorFunction = (props: any) => {
   );
 };
 
-const AddAuthorForm: FC<AuthorFormProps> = ({ onAddAuthor }) => {
+const AddAuthorForm: FC<AuthorFormProps> = (props, { onAddAuthor }) => {
+debugger;
+console.log(props);
   return (
     <div className="AddAuthorForm">
       <h1>Add Author Form</h1>
-      <AuthorFunction onAddAuthor={onAddAuthor} />
+      <AuthorFunction {...props}  />
     </div>
   );
 };

@@ -1,58 +1,54 @@
-import React,{useState} from "react";
+import React,{useState,useContext} from "react";
 import "./index.css";
 import "./App.css";
 import "./bootstrap.min.css";
 import AuthorQuiz from "./AuthorQuiz";
-import { shuffle, sample } from "underscore";
 import { Authors, Author } from "./types";
-import { authors } from "./authors";
+
+import {AuthorQuizContext} from "./AuthorQuiz.context"
 import "./index";
 import { BrowserRouter, Route } from "react-router-dom";
 import { AuthorWrapper } from "./AuthorWrapper";
+import { authors } from "./authors";
+
 import AddAuthorForm from "./AddAuthorForm"
 
 
-export const getTurnData = (authors: Author[]): Authors => {
-  const allBooks = authors.reduce(function (p, c, i) {
-    return p.concat(c.books);
-  }, [] as string[]);
-  const fourRandomBooks = shuffle(allBooks).slice(0, 4);
-  const answer = sample(fourRandomBooks);
-  let newAuth = authors.find((author) =>
-    author.books.some((title: string) => title === answer)
-  );
-  if (!newAuth) {
-    newAuth = authors[0];
-  }
-  return {
-    books: fourRandomBooks,
-    author: newAuth,
-  };
-};
-let state = {
-  turnData: getTurnData(authors),
-  highlight: "",
-};
-
 export const App = () => {
-  // var m = useContext(AuthorQuizContext);
-  // console.log(m);
+  var m = useContext(AuthorQuizContext);
+  console.log(m);
+  // console.log(m.state.highlight);
+  console.log(m.turnData);
+
   const [high, sethigh] = useState(0);
 
   function OnAnswerSelected(answer: string) {
-    const isCorrect = state.turnData.author.books.some((book) => book === answer);
-    state.highlight = isCorrect ? "correct" : "wrong";
-    console.log(state.highlight);
+    const isCorrect = m.turnData.author.books.some((book) => book === answer);
+    m.highlight = isCorrect ? "correct" : "wrong";
+    // console.log(m.state.highlight);
     console.log(answer);
     sethigh(high+1);
   }
+  // var author=[];  
+  // const authors: Author[] = [
+  //   {
+  //     name: "",
+  //     imageUrl: "",
+  //     imageSource: "",
+  //     books: [""],
+  //   }
+  // ];
   
   return (
     
       
       <BrowserRouter>
-<Route exact path='/' render={(props) => ( <AuthorQuiz {...state} onAnswerSelected={OnAnswerSelected} />  )}/>
-      <Route path="/add" component={AddAuthorForm}/>
+<Route exact path='/' render={(props) => ( <AuthorQuiz  authors={authors}turnData={m.turnData} highlight={m.highlight} onAnswerSelected={OnAnswerSelected} />  )}/>
+      <Route path="/add" render={(props)=> (<AddAuthorForm {...props} onAddAuthor={(author: Author) => {
+        authors.push(author);debugger;       props.history.push("/");
+        sethigh(high+1);
+
+      }}/>)}/>
       </BrowserRouter>
   
   );

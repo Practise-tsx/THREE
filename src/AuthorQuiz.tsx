@@ -111,8 +111,12 @@ const AuthorQuiz: FC<AuthorQuiZprops> = ({
   turnData,
   highlight,
   onAnswerSelected,
+  authors,
+  
 }) => {
-
+debugger;
+authors.push();
+console.log(authors);
   return (
     <div className="container-fluid">
       <Hero></Hero>
